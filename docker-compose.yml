@@ -1,0 +1,8 @@
+version: '3'   # this is version of compose
+services:      # It represents the containers that will be created in the application.
+  redis-server:  # luanching first redis db container & this tag represent the container name .
+    image: 'redis'  #defining image of redis
+  node-app:     # this one is second container
+    build: .      # build property define from where it should build the image for this instance .
+    ports:          # defining ports .
+      - '4001:8081'
