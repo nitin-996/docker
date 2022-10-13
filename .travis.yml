@@ -1,0 +1,38 @@
+sudo: required  # telling travis CI that we required sudo permission
+
+services:
+  - docker  # we tell travis ci run docker runtime to complete the deployment .
+
+
+before_install:
+  -  dockerfile build -t testimage . 
+  # it will create the docker image in the travis ci .
+
+script:
+  -  docker run testimage npm run test -- --coverage
+# with -- --coverage this command exit automatically ,without it 
+# this expect us to give exit input to it so to successfully run 
+# this command we should put coverage word in it .
+
+deploy: 
+  provider: elasticbeanstalk 
+  # travis ci comes preconfigured to deploy our application to 
+  # hanful of diffresnt providers or hosting providers such as 
+  # aws , digital ocean etc .
+
+  region: "us-east-1" # change it where you launch the elasticbeanstalk
+  app: "docker"  # put here your application name which you typed which creating the 
+  #elastic beanstalk
+
+  env: "docker-env"  
+  # check the docker notes file or 94 no video of stephen .
+
+  bucket_name: "type ur bucket name which was created by elastic beanstalk "
+  bucket_path: "give here your folder name from the upper bucket which might be created by the elastic beanstalk or if it doesn't created by it then cerate it yourself "
+
+  on:
+    branch: master
+
+    # it deplaoy code only when change happens in master branch
+  access_key_id: "type env which is defined in the travis ci setting of ENVIRONMENT"  
+  secret_access_key: "type env which is defined in the travis ci setting of ENVIRONMENT"  
